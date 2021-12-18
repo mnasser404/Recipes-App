@@ -4,23 +4,33 @@ import com.example.recipesapp.api.RecipeApi
 import com.example.recipesapp.db.AppDatabase
 import com.example.recipesapp.models.Recipe
 import com.example.recipesapp.models.RecipesResponse
-import retrofit2.Response
+import retrofit2.HttpException
 
 class RepositoryImp(private val recipeApi: RecipeApi, private val appDatabase: AppDatabase) : Repository {
 
-    override suspend fun getRecipesFromRemote(page: Int) : Response<RecipesResponse> {
-       return recipeApi.getRecipes(
-            page = page,
-            query = "",
-            token = Constants.API_KEY
-        )
+    override suspend fun getRecipesFromRemote(page: Int) : Resource<RecipesResponse> {
+        return try{
+            val response =  recipeApi.getRecipes(
+                page = page,
+                query = "",
+                token = Constants.API_KEY
+            )
+            Resource.Success(response)
+        }catch (ex : HttpException){
+            Resource.Error(ex.message(), ex.code(), null)
+        }
     }
 
-    override suspend fun searchForRecipe(recipe: String) : Response<RecipesResponse> {
-        return recipeApi.searchForRecipe(
-            query = recipe,
-            token = Constants.API_KEY
-        )
+    override suspend fun searchForRecipe(recipe: String) : Resource<RecipesResponse> {
+        return try{
+            val response = recipeApi.searchForRecipe(
+                query = recipe,
+                token = Constants.API_KEY
+            )
+            Resource.Success(response)
+        }catch (ex : HttpException){
+            Resource.Error(ex.message(), ex.code(), null)
+        }
     }
 
     override suspend fun getRecipesFromCache() : List<Recipe> { return appDatabase.recipeDao().getAll() }

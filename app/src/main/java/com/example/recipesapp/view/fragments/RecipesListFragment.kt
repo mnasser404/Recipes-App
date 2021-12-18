@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewStub
-import androidx.lifecycle.ViewModelProvider
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.reciepsapp.R
@@ -38,6 +38,7 @@ class RecipesListFragment : BaseFragment() {
                 }
                 is Resource.Error -> {
                     showHideProgressBar(false)
+                    Toast.makeText(requireActivity(), it.message + " / " + it.errorCode, Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Loading -> {
                     showHideProgressBar(true)

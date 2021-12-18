@@ -2,13 +2,12 @@ package com.example.recipesapp.core
 
 import com.example.recipesapp.models.Recipe
 import com.example.recipesapp.models.RecipesResponse
-import retrofit2.Response
 
 interface Repository {
 
-    suspend fun getRecipesFromRemote(page: Int) : Response<RecipesResponse>
+    suspend fun getRecipesFromRemote(page: Int) : Resource<RecipesResponse>
 
-    suspend fun searchForRecipe(recipe : String) : Response<RecipesResponse>
+    suspend fun searchForRecipe(recipe : String) : Resource<RecipesResponse>
 
     suspend fun getRecipesFromCache() : List<Recipe>
 

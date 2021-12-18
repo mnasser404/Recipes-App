@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recipesapp.EspressoIdleResource
 import com.example.recipesapp.core.Repository
 import com.example.recipesapp.core.Resource
 import com.example.recipesapp.models.Recipe
@@ -12,7 +11,7 @@ import com.example.recipesapp.models.RecipesResponse
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class RecipeListViewModel(private val repository: Repository) : ViewModel() {
+class RecipeListViewModel(val repository: Repository) : ViewModel() {
 
     private var recipesMutableLiveData = MutableLiveData<Resource<RecipesResponse>>()
     private var recipesCachedMutableLiveData = MutableLiveData<Resource<List<Recipe>>>()
@@ -25,21 +24,17 @@ class RecipeListViewModel(private val repository: Repository) : ViewModel() {
     }
 
     fun getRecipes() {
-        EspressoIdleResource.increment()
+        //EspressoIdleResource.increment()
         viewModelScope.async {
             val result = viewModelScope.async {
                     recipesMutableLiveData.postValue(Resource.Loading())
                     val response = repository.getRecipesFromRemote(pageNumber)
-                    if (response.isSuccessful) {
-                        response.body()?.let {
+                        response.data?.let {
                             updateRemoteWithCachedItems(it.results)
-                            recipesMutableLiveData.postValue(Resource.Success(it))
                             totalItemsCount = it.count
                         }
-                    } else {
-                        recipesMutableLiveData.postValue(Resource.Error(response.message()))
-                    }
-                EspressoIdleResource.decrement()
+                recipesMutableLiveData.postValue(response)
+                //EspressoIdleResource.decrement()
             }
             result.await()
         }
@@ -83,14 +78,11 @@ class RecipeListViewModel(private val repository: Repository) : ViewModel() {
             val result = viewModelScope.async {
                 recipesMutableLiveData.postValue(Resource.Loading())
                 val response = repository.searchForRecipe(recipeName)
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        recipesMutableLiveData.postValue(Resource.Success(it))
-                        totalItemsCount = it.count
-                    }
-                } else {
-                    recipesMutableLiveData.postValue(Resource.Error(response.message()))
+                response.data?.let {
+                    recipesMutableLiveData.postValue(Resource.Success(it))
+                    totalItemsCount = it.count
                 }
+                recipesMutableLiveData.postValue(response)
             }
             result.await()
         }
