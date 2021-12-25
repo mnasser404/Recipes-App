@@ -4,4 +4,6 @@
 - Koin
 - Room 
 - Retrofit 
-- Espresso 
+- Espresso
+- JUnit 
+- Mockito
