@@ -1,12 +1,15 @@
-package com.example.recipesapp.core
+package com.example.recipesapp.data.repository
 
-import com.example.recipesapp.api.RecipeApi
-import com.example.recipesapp.db.AppDatabase
-import com.example.recipesapp.models.Recipe
-import com.example.recipesapp.models.RecipesResponse
+import com.example.recipesapp.data.api.Constants
+import com.example.recipesapp.utils.Resource
+import com.example.recipesapp.data.api.RecipeApi
+import com.example.recipesapp.data.db.AppDatabase
+import com.example.recipesapp.data.models.Recipe
+import com.example.recipesapp.data.models.RecipesResponse
 import retrofit2.HttpException
 
-class RepositoryImp(private val recipeApi: RecipeApi, private val appDatabase: AppDatabase) : Repository {
+class RepositoryImp(private val recipeApi: RecipeApi, private val appDatabase: AppDatabase) :
+    Repository {
 
     override suspend fun getRecipesFromRemote(page: Int) : Resource<RecipesResponse> {
         return try{

@@ -7,7 +7,7 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.reciepsapp.R
-import com.example.recipesapp.view.activities.RecipesContainerActivity
+import com.example.recipesapp.presentation.RecipesContainerActivity
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

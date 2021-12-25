@@ -2,12 +2,12 @@ package com.example.recipesapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.recipesapp.api.RecipeApi
-import com.example.recipesapp.core.Constants
-import com.example.recipesapp.core.Repository
-import com.example.recipesapp.core.RepositoryImp
-import com.example.recipesapp.db.AppDatabase
-import com.example.recipesapp.viewmodel.RecipeListViewModel
+import com.example.recipesapp.data.api.RecipeApi
+import com.example.recipesapp.data.api.Constants
+import com.example.recipesapp.data.repository.Repository
+import com.example.recipesapp.data.repository.RepositoryImp
+import com.example.recipesapp.data.db.AppDatabase
+import com.example.recipesapp.presentation.RecipeListViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -27,7 +27,7 @@ val viewModelModule = module {
 }
 
 
-fun getRepository(recipeApi: RecipeApi, appDatabase: AppDatabase) : Repository{
+fun getRepository(recipeApi: RecipeApi, appDatabase: AppDatabase) : Repository {
     return RepositoryImp(recipeApi, appDatabase)
 }
 

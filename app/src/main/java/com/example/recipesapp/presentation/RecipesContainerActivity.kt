@@ -1,10 +1,10 @@
-package com.example.recipesapp.view.activities
+package com.example.recipesapp.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.reciepsapp.R
-import com.example.recipesapp.view.fragments.FavouriteRecipesFragment
-import com.example.recipesapp.view.fragments.RecipesListFragment
+import com.example.recipesapp.presentation.favourite.FavouriteRecipesFragment
+import com.example.recipesapp.presentation.home.RecipesListFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

@@ -1,4 +1,4 @@
-package com.example.recipesapp.models
+package com.example.recipesapp.data.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

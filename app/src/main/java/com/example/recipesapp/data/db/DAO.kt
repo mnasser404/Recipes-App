@@ -1,10 +1,10 @@
-package com.example.recipesapp.db
+package com.example.recipesapp.data.db
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.recipesapp.models.Recipe
+import com.example.recipesapp.data.models.Recipe
 
 @Dao
 interface DAO {

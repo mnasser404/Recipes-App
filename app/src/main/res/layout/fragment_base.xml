@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.recipesapp.view.activities.RecipesContainerActivity">
+    tools:context="com.example.recipesapp.presentation.RecipesContainerActivity">
 
     <ViewStub
         android:id="@+id/child_fragment_content_holder"

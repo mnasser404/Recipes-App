@@ -1,4 +1,4 @@
-package com.example.recipesapp.view.fragments
+package com.example.recipesapp.presentation.base
 
 import android.os.Bundle
 import android.view.LayoutInflater

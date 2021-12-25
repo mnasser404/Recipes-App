@@ -7,8 +7,8 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.ActivityTestRule
 import com.example.reciepsapp.R
-import com.example.recipesapp.models.Recipe
-import com.example.recipesapp.view.activities.RecipeDetailsActivity
+import com.example.recipesapp.data.models.Recipe
+import com.example.recipesapp.presentation.details.RecipeDetailsActivity
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

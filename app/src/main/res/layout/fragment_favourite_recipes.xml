@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/favouriteRecipesList"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.recipesapp.view.fragments.RecipesListFragment">
+    tools:context="com.example.recipesapp.presentation.home.RecipesListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recipesFavouritesRecyclerView"

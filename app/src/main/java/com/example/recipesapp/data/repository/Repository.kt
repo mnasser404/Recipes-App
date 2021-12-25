@@ -1,7 +1,8 @@
-package com.example.recipesapp.core
+package com.example.recipesapp.data.repository
 
-import com.example.recipesapp.models.Recipe
-import com.example.recipesapp.models.RecipesResponse
+import com.example.recipesapp.utils.Resource
+import com.example.recipesapp.data.models.Recipe
+import com.example.recipesapp.data.models.RecipesResponse
 
 interface Repository {
 

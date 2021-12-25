@@ -1,4 +1,4 @@
-package com.example.recipesapp.view.activities
+package com.example.recipesapp.presentation.details
 
 import android.content.Context
 import android.content.Intent
@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.reciepsapp.R
-import com.example.recipesapp.models.Recipe
+import com.example.recipesapp.data.models.Recipe
 
 class RecipeDetailsActivity : AppCompatActivity() {
 

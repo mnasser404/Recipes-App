@@ -9,9 +9,10 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.reciepsapp.R
-import com.example.recipesapp.adapters.RecipesListAdapter
-import com.example.recipesapp.models.Recipe
-import com.example.recipesapp.view.activities.RecipesContainerActivity
+import com.example.recipesapp.presentation.RecipesListAdapter
+import com.example.recipesapp.data.models.Recipe
+import com.example.recipesapp.utils.EspressoIdleResource
+import com.example.recipesapp.presentation.RecipesContainerActivity
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

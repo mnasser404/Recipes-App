@@ -1,4 +1,4 @@
-package com.example.recipesapp.view.fragments
+package com.example.recipesapp.presentation.favourite
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.reciepsapp.R
-import com.example.recipesapp.adapters.RecipesListAdapter
-import com.example.recipesapp.models.Recipe
-import com.example.recipesapp.viewmodel.RecipeListViewModel
+import com.example.recipesapp.presentation.RecipesListAdapter
+import com.example.recipesapp.data.models.Recipe
+import com.example.recipesapp.presentation.details.RecipeDetailsActivity
+import com.example.recipesapp.presentation.RecipeListViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
@@ -22,7 +23,14 @@ class FavouriteRecipesFragment : Fragment() {
 
     private fun initializeRecyclerView(rootView: View) {
         val recipesRecyclerView = rootView.findViewById<RecyclerView>(R.id.recipesFavouritesRecyclerView)
-        recipesListAdapter = RecipesListAdapter(viewModel)
+        recipesListAdapter = RecipesListAdapter(true, { RecipeDetailsActivity.getInstance(requireActivity(), it) },
+            { isFavourite, selectedItem ->
+                if(isFavourite) {
+                    viewModel.saveRecipeToDatabase(selectedItem)
+                }else {
+                    viewModel.removeRecipeFromDatabase(selectedItem)
+                }
+            })
         recipesRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recipesRecyclerView.adapter = recipesListAdapter
     }
@@ -32,9 +40,9 @@ class FavouriteRecipesFragment : Fragment() {
         val view =  inflater.inflate(R.layout.fragment_favourite_recipes, container, false)
         initializeRecyclerView(view)
         viewModel.getCachedRecipes()
-        viewModel.getCachedRecipesLiveData().observe(viewLifecycleOwner, {
-            recipesListAdapter.updateAdapterList(it.data!! as ArrayList<Recipe>)
-        })
+        viewModel.getCachedRecipesLiveData()?.observe(viewLifecycleOwner) {
+            recipesListAdapter.updateAdaperList(it.data!! as ArrayList<Recipe>)
+        }
         return view
     }
 

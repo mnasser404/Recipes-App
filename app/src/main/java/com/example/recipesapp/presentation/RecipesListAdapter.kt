@@ -1,4 +1,4 @@
-package com.example.recipesapp.adapters
+package com.example.recipesapp.presentation
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.reciepsapp.R
-import com.example.recipesapp.models.Recipe
-import com.example.recipesapp.view.activities.RecipeDetailsActivity
-import com.example.recipesapp.viewmodel.RecipeListViewModel
+import com.example.recipesapp.data.models.Recipe
 import com.like.LikeButton
 import com.like.OnLikeListener
 
-class RecipesListAdapter(var viewModel: RecipeListViewModel) : RecyclerView.Adapter<RecipesListAdapter.RecipeViewHolder>() {
+class RecipesListAdapter(var isFavouriteScreen : Boolean,
+                         var itemClickedCallBack : (selectedItem : Recipe) -> Unit,
+                         var favouriteClickedCallBack : (isFavourite : Boolean, selectedItem : Recipe) -> Unit) : RecyclerView.Adapter<RecipesListAdapter.RecipeViewHolder>() {
 
     private var recipesItems = ArrayList<Recipe>()
 
@@ -44,27 +44,29 @@ class RecipesListAdapter(var viewModel: RecipeListViewModel) : RecyclerView.Adap
         holder.favoriteBtn.setOnLikeListener(object : OnLikeListener{
             override fun liked(likeButton: LikeButton?) {
                 currentItem.isFavourite = true
-                viewModel.saveRecipeToDatabase(currentItem)
+                favouriteClickedCallBack(true, currentItem)
             }
-
             override fun unLiked(likeButton: LikeButton?) {
                 currentItem.isFavourite = false
-                viewModel.deleteRecipeFromDatabase(currentItem)
-                recipesItems.remove(currentItem)
-                notifyDataSetChanged()
+                if(isFavouriteScreen){
+                    recipesItems.remove(currentItem)
+                    notifyDataSetChanged()
+                }
+                favouriteClickedCallBack(false, currentItem)
             }
         })
 
         holder.itemView.setOnClickListener {
-            RecipeDetailsActivity.getInstance(holder.itemView.context, currentItem)
+            itemClickedCallBack(currentItem)
         }
+
     }
 
     override fun getItemCount(): Int {
         return recipesItems.size
     }
 
-    fun updateAdapterList(recipesItems : ArrayList<Recipe>){
+    fun updateAdaperList(recipesItems : ArrayList<Recipe>){
         this.recipesItems.addAll(recipesItems)
         notifyDataSetChanged()
     }

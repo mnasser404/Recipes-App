@@ -1,7 +1,7 @@
-package com.example.recipesapp.api
+package com.example.recipesapp.data.api
 
-import com.example.recipesapp.core.Constants.Companion.GET_RECIPES
-import com.example.recipesapp.models.RecipesResponse
+import com.example.recipesapp.data.api.Constants.Companion.GET_RECIPES
+import com.example.recipesapp.data.models.RecipesResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query

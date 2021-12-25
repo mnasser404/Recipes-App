@@ -1,21 +1,20 @@
-package com.example.recipesapp.viewmodel
+package com.example.recipesapp.presentation
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recipesapp.core.Repository
-import com.example.recipesapp.core.Resource
-import com.example.recipesapp.models.Recipe
-import com.example.recipesapp.models.RecipesResponse
+import com.example.recipesapp.data.repository.Repository
+import com.example.recipesapp.utils.Resource
+import com.example.recipesapp.data.models.Recipe
+import com.example.recipesapp.data.models.RecipesResponse
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class RecipeListViewModel(val repository: Repository) : ViewModel() {
 
-    private var recipesMutableLiveData = MutableLiveData<Resource<RecipesResponse>>()
-    private var recipesCachedMutableLiveData = MutableLiveData<Resource<List<Recipe>>>()
-    private var searchedRecipesMutableLiveData = MutableLiveData<Resource<List<Recipe>>>()
+    private var recipesMutableLiveData : MutableLiveData<Resource<RecipesResponse>> = MutableLiveData<Resource<RecipesResponse>>()
+    private var recipesCachedMutableLiveData : MutableLiveData<Resource<List<Recipe>>> = MutableLiveData<Resource<List<Recipe>>>()
     private var pageNumber = 1
     private var totalItemsCount = 0
 
@@ -23,12 +22,16 @@ class RecipeListViewModel(val repository: Repository) : ViewModel() {
         pageNumber++;
     }
 
+    fun resetPageNumber() {
+        this.pageNumber = 1
+    }
+
     fun getRecipes() {
         //EspressoIdleResource.increment()
         viewModelScope.async {
             val result = viewModelScope.async {
-                    recipesMutableLiveData.postValue(Resource.Loading())
-                    val response = repository.getRecipesFromRemote(pageNumber)
+                recipesMutableLiveData.postValue(Resource.Loading())
+                    val response = repository.getRecipesFromRemote(getPageNumber())
                         response.data?.let {
                             updateRemoteWithCachedItems(it.results)
                             totalItemsCount = it.count
@@ -40,7 +43,8 @@ class RecipeListViewModel(val repository: Repository) : ViewModel() {
         }
     }
 
-    private fun updateRemoteWithCachedItems(remoteItems : List<Recipe>) : List<Recipe> {
+    fun updateRemoteWithCachedItems(remoteItems : List<Recipe>?) : List<Recipe>? {
+        if(!remoteItems.isNullOrEmpty()){
             viewModelScope.async {
                 val result = viewModelScope.async {
                     repository.getRecipesFromCache()
@@ -57,6 +61,7 @@ class RecipeListViewModel(val repository: Repository) : ViewModel() {
                     }
                 }
             }
+        }
         return remoteItems
     }
 
@@ -73,30 +78,19 @@ class RecipeListViewModel(val repository: Repository) : ViewModel() {
         }
     }
 
-    fun searchForRecipe(recipeName: String) {
-        viewModelScope.async {
-            val result = viewModelScope.async {
-                recipesMutableLiveData.postValue(Resource.Loading())
-                val response = repository.searchForRecipe(recipeName)
-                response.data?.let {
-                    recipesMutableLiveData.postValue(Resource.Success(it))
-                    totalItemsCount = it.count
-                }
-                recipesMutableLiveData.postValue(response)
-            }
-            result.await()
-        }
-    }
-
     fun saveRecipeToDatabase(recipe: Recipe) {
         viewModelScope.launch {
             repository.insertIntoDatabase(recipe)
+            val recipe = getRecipesLiveData().value?.data?.results?.find { it.title == recipe.title }
+            recipe?.isFavourite = true
         }
     }
 
-    fun deleteRecipeFromDatabase(recipe: Recipe) {
+    fun removeRecipeFromDatabase(recipe: Recipe) {
         viewModelScope.launch {
             repository.removeFromDatabase(recipe)
+            val recipe = getRecipesLiveData().value?.data?.results?.find { it.title == recipe.title }
+            recipe?.isFavourite = false
         }
     }
 
@@ -104,12 +98,16 @@ class RecipeListViewModel(val repository: Repository) : ViewModel() {
         return recipesMutableLiveData
     }
 
-    fun getCachedRecipesLiveData(): LiveData<Resource<List<Recipe>>> {
+    fun getCachedRecipesLiveData(): LiveData<Resource<List<Recipe>>>? {
         return recipesCachedMutableLiveData
     }
 
     fun getTotalItemsCount(): Int {
-        return totalItemsCount;
+        return totalItemsCount
+    }
+
+    fun getPageNumber(): Int{
+        return pageNumber
     }
 
 }

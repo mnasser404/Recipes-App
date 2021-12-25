@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.example.recipesapp.App"
+        android:name="com.example.recipesapp.app.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -13,10 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RecipesApp">
         <activity
-            android:name="com.example.recipesapp.view.activities.RecipeDetailsActivity"
+            android:name="com.example.recipesapp.presentation.details.RecipeDetailsActivity"
             android:exported="true"/>
         <activity
-            android:name="com.example.recipesapp.view.activities.RecipesContainerActivity"
+            android:name="com.example.recipesapp.presentation.RecipesContainerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

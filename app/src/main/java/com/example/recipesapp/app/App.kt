@@ -1,4 +1,4 @@
-package com.example.recipesapp
+package com.example.recipesapp.app
 
 import android.app.Application
 import com.example.recipesapp.di.appModule
